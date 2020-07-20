@@ -1,6 +1,7 @@
-import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.Rectangle;
 import java.awt.Shape;
+import java.awt.geom.AffineTransform;
 import java.util.LinkedList;
 
 public abstract class GameObject {
@@ -10,16 +11,14 @@ public abstract class GameObject {
 	//Can the object currently be rendered?
 	protected boolean renderable;
 	
-	public static LinkedList<GameObject> objectList= new LinkedList<>();
-	
 	public GameObject(boolean updateable, boolean renderable) {
 		this.updateable = updateable;
 		this.renderable = renderable;
-		objectList.add(this);
+		Game.handler.objects.add(this);
 	}
 	
 	public abstract void tick();
-	public abstract void render(Graphics g);
+	public abstract void render(Graphics2D g2d);
 	public abstract LinkedList<Shape> getCollisionBounds();
 	
 	public boolean isOnScreen() {
@@ -33,6 +32,12 @@ public abstract class GameObject {
 			if(currentBound.intersects(window)) return true;
 		}
 		return false;
+	}
+	
+	public static Shape getRotatedShape(Rectangle shape, float angle, float rotX, float rotY) {
+		AffineTransform transform = new AffineTransform();
+		transform.rotate(angle, rotX, rotY);
+		return transform.createTransformedShape(shape);
 	}
 	
 	public boolean isUpdateable() {

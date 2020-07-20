@@ -1,6 +1,7 @@
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.image.BufferStrategy;
 
 public class Game extends Canvas implements Runnable{
@@ -14,6 +15,10 @@ public class Game extends Canvas implements Runnable{
 	public static Window window;
 	private static KeyHandler keyListener = new KeyHandler();
 	private static MouseHandler mouseListener = new MouseHandler();
+	
+	public static Handler handler = new Handler();
+	
+	private Fish fish = new Fish(100,100,10,16,32,64,Color.green, Color.red);
 	
 	private Thread thread;
 	private boolean running = false;
@@ -74,6 +79,7 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	private void tick() {
+		handler.tick();
 	}
 	
 	private void render() {
@@ -83,12 +89,14 @@ public class Game extends Canvas implements Runnable{
 			return;
 		}
 		
-		Graphics g = bs.getDrawGraphics();
+		Graphics2D g2d = (Graphics2D)bs.getDrawGraphics();
 		
-		g.setColor(Color.black);
-		g.fillRect(0, 0, WIDTH, HEIGHT);
+		g2d.setColor(Color.black);
+		g2d.fillRect(0, 0, WIDTH, HEIGHT);
 		
-		g.dispose();
+		handler.render(g2d);
+		
+		g2d.dispose();
 		bs.show();
 	}
 
