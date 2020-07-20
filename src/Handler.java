@@ -7,9 +7,7 @@ public class Handler{
 	public void tick() {
 		for(int i = 0; i< objects.size(); i++) {
 			GameObject object = objects.get(i);
-			if(object.isUpdateable()) {
-				object.tick();
-			}
+			object.tick();
 		}
 	}
 	

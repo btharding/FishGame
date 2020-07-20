@@ -11,14 +11,21 @@ public class Fish extends GameObject{
 	private static LinkedList<Fish> fishList = new LinkedList<>();
 	private static Random rand = new Random();
 	
+	private static enum States{
+		WANDERING,
+	};
+	
 	//The x and y coordinates refer to the top left of the head.
+	private String name;
 	private float x, y, velX, velY, angle, speed, timer;
 	private int width, headHeight, tailHeight, turning;
 	private Color headColor, tailColor;
 	private boolean selected = false;
+	private States state = States.WANDERING;
 
-	public Fish(int x, int y, float speed, int width, int headHeight, int tailHeight, Color headColor, Color tailColor) {
+	public Fish(String name, int x, int y, float speed, int width, int headHeight, int tailHeight, Color headColor, Color tailColor) {
 		super(true, true);
+		this.name = name;
 		this.x = x;
 		this.y = y;
 		this.velX = 0;
@@ -88,22 +95,22 @@ public class Fish extends GameObject{
 	}
 	
 	private void ai() {
-		if(this.timer <= 0) {
-			this.turning = Fish.rand.nextInt(3)-1;
-			if(this.turning == 0) {
-				this.timer = Fish.rand.nextInt((int)(10/this.speed))+10/this.speed;
+			if(this.timer <= 0) {
+				this.turning = Fish.rand.nextInt(3)-1;
+				if(this.turning == 0) {
+					this.timer = Fish.rand.nextInt((int)(10/this.speed))+10/this.speed;
+				}else {
+					this.timer = Fish.rand.nextInt((int)(30/this.speed))+30/this.speed;
+				}
 			}else {
-				this.timer = Fish.rand.nextInt((int)(30/this.speed))+30/this.speed;
+				this.timer -= 1;
 			}
-		}else {
-			this.timer -= 1;
-		}
-		
-		if(this.turning == 1) {
-			this.angle -= 0.03;
-		}else if(this.turning == -1) {
-			this.angle += 0.03;
-		}
+			
+			if(this.turning == 1) {
+				this.angle -= 0.03;
+			}else if(this.turning == -1) {
+				this.angle += 0.03;
+			}
 	}
 	
 	public static void checkClick() {		
@@ -151,6 +158,14 @@ public class Fish extends GameObject{
 		selectFish(Fish.fishList.get(index));
 	}
 
+	public String getName() {
+		return name;
+	}
+	
+	public float getSpeed() {
+		return speed;
+	}
+	
 	public float getVelX() {
 		return velX;
 	}
@@ -177,5 +192,13 @@ public class Fish extends GameObject{
 	
 	public int getTailHeight() {
 		return tailHeight;
+	}
+	
+	public Color getHeadColor() {
+		return headColor;
+	}
+	
+	public Color getTailColor() {
+		return tailColor;
 	}
 }
