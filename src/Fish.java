@@ -93,4 +93,31 @@ public class Fish extends GameObject{
 		}
 	}
 
+	public float getVelX() {
+		return velX;
+	}
+
+	public float getVelY() {
+		return velY;
+	}
+	
+	public float getX() {
+		return x;
+	}
+	
+	public float getY() {
+		return y;
+	}
+	
+	public int getWidth() {
+		return width;
+	}
+
+	public int getHeadHeight() {
+		return headHeight;
+	}
+	
+	public int getTailHeight() {
+		return tailHeight;
+	}
 }
