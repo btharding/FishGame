@@ -51,11 +51,15 @@ public class Fish extends GameObject{
 	public void render(Graphics2D g2d) {
 		g2d.setColor(this.headColor);
 		g2d.fill(this.getHead());
+		if(this.selected) {
+			g2d.setColor(Color.white);
+			g2d.draw(this.getHead());
+		}
 		g2d.setColor(this.tailColor);
 		g2d.fill(this.getTail());
 		if(this.selected) {
 			g2d.setColor(Color.white);
-			g2d.draw(this.getHead());
+			g2d.draw(this.getTail());
 		}
 	}
 
@@ -85,11 +89,11 @@ public class Fish extends GameObject{
 	
 	private void ai() {
 		if(this.timer <= 0) {
-			this.turning = this.rand.nextInt(3)-1;
+			this.turning = Fish.rand.nextInt(3)-1;
 			if(this.turning == 0) {
-				this.timer = this.rand.nextInt((int)(10/this.speed))+10/this.speed;
+				this.timer = Fish.rand.nextInt((int)(10/this.speed))+10/this.speed;
 			}else {
-				this.timer = this.rand.nextInt((int)(30/this.speed))+30/this.speed;
+				this.timer = Fish.rand.nextInt((int)(30/this.speed))+30/this.speed;
 			}
 		}else {
 			this.timer -= 1;
@@ -132,6 +136,19 @@ public class Fish extends GameObject{
 			fish.selected = true;
 		}
 		Camera.setCenterOn(Fish.selectedFish);
+	}
+	
+	public static void nextFish() {
+		int index;
+		if(Fish.selectedFish!=null) {
+			index = Fish.fishList.indexOf(Fish.selectedFish)+1;
+			if(index >= Fish.fishList.size()) {
+				index = 0;
+			}
+		}else {
+			index = 0;
+		}
+		selectFish(Fish.fishList.get(index));
 	}
 
 	public float getVelX() {

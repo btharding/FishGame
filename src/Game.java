@@ -19,6 +19,7 @@ public class Game extends Canvas implements Runnable{
 	public static Handler handler = new Handler();
 	
 	private Fish fish = new Fish(100,100,1,16,32,32,Color.red, Color.green);
+	private Fish fish2 = new Fish(200,200,1,16,32,32,Color.black, Color.black);
 	
 	private Thread thread;
 	private boolean running = false;
@@ -92,7 +93,7 @@ public class Game extends Canvas implements Runnable{
 		
 		Graphics2D g2d = (Graphics2D)bs.getDrawGraphics();
 		
-		g2d.setColor(Color.black);
+		g2d.setColor(new Color(0,130,200));
 		g2d.fillRect(0, 0, WIDTH, HEIGHT);
 		
 		g2d.translate(-Camera.getxOffset(), -Camera.getyOffset());

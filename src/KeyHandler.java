@@ -26,6 +26,10 @@ public class KeyHandler extends KeyAdapter{
 		}else if(key == KeyEvent.VK_DOWN) {
 			arrowKeysPressed.replace("D",true);
 		}
+		
+		if(key == KeyEvent.VK_SPACE) {
+			Fish.nextFish();
+		}
 
 	}
 
