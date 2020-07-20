@@ -55,9 +55,12 @@ public class Camera {
 	}
 	
 	public static void setCenterOn(Fish centerOn) {
+		if(centerOn!=null) {
+			Camera.xOffset = centerOn.getX() - Game.WIDTH/2 + centerOn.getWidth()/2;
+			Camera.yOffset = centerOn.getY() - Game.HEIGHT/2 ;
+		}
+		
 		Camera.centerOn = centerOn;
-		Camera.xOffset = centerOn.getX() - Game.WIDTH/2 + centerOn.getWidth()/2;
-		Camera.yOffset = centerOn.getY() - Game.HEIGHT/2 ;
 	}
 	
 	

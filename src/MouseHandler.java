@@ -3,19 +3,20 @@ import java.awt.event.MouseEvent;
 import javax.swing.event.MouseInputListener;
 
 public class MouseHandler implements MouseInputListener {
+	public static int mouseX, mouseY;
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
+		
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e) {
-		
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		
+		Fish.checkClick();
 	}
 
 	@Override
@@ -35,7 +36,8 @@ public class MouseHandler implements MouseInputListener {
 
 	@Override
 	public void mouseMoved(MouseEvent e) {
-		
+		mouseX = (int) (e.getX()+Camera.getxOffset());
+		mouseY = (int) (e.getY()+Camera.getyOffset());
 	}
 
 }

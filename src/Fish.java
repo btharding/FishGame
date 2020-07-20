@@ -7,11 +7,15 @@ import java.util.Random;
 
 public class Fish extends GameObject{
 	
+	public static Fish selectedFish = null;
+	private static LinkedList<Fish> fishList = new LinkedList<>();
+	private static Random rand = new Random();
+	
 	//The x and y coordinates refer to the top left of the head.
 	private float x, y, velX, velY, angle, speed, timer;
 	private int width, headHeight, tailHeight, turning;
 	private Color headColor, tailColor;
-	private Random rand = new Random();
+	private boolean selected = false;
 
 	public Fish(int x, int y, float speed, int width, int headHeight, int tailHeight, Color headColor, Color tailColor) {
 		super(true, true);
@@ -26,9 +30,9 @@ public class Fish extends GameObject{
 		this.headHeight = headHeight;
 		this.tailHeight = tailHeight;
 		this.turning = 0;
-		
 		this.headColor = headColor;
 		this.tailColor = tailColor;
+		fishList.add(this);
 	}
 
 	@Override
@@ -38,6 +42,7 @@ public class Fish extends GameObject{
 		}else {
 			this.renderable = false;
 		}
+	
 		this.ai();
 		this.move();
 	}
@@ -48,6 +53,10 @@ public class Fish extends GameObject{
 		g2d.fill(this.getHead());
 		g2d.setColor(this.tailColor);
 		g2d.fill(this.getTail());
+		if(this.selected) {
+			g2d.setColor(Color.white);
+			g2d.draw(this.getHead());
+		}
 	}
 
 	@Override
@@ -91,6 +100,38 @@ public class Fish extends GameObject{
 		}else if(this.turning == -1) {
 			this.angle += 0.03;
 		}
+	}
+	
+	public static void checkClick() {		
+		Rectangle mouse = new Rectangle(MouseHandler.mouseX, MouseHandler.mouseY, 1, 1);
+		
+		for(int i = 0; i < Fish.fishList.size(); i++) {
+			
+			Fish candidate = Fish.fishList.get(i);
+			if(candidate.isRenderable()) {
+				if(candidate.collidesWith(mouse)) {
+					selectFish(candidate);
+					return;
+				}
+			}
+		}
+		selectFish(null);
+	}
+	
+	public static void selectFish(Fish fish) {
+		if(fish == null) {
+			if(Fish.selectedFish != null) {
+				Fish.selectedFish.selected = false;
+				Fish.selectedFish = null;
+			}
+		}else {
+			if(Fish.selectedFish!=null) {
+				Fish.selectedFish.selected = false;
+			}
+			Fish.selectedFish = fish;
+			fish.selected = true;
+		}
+		Camera.setCenterOn(Fish.selectedFish);
 	}
 
 	public float getVelX() {

@@ -79,8 +79,8 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	private void tick() {
-		Camera.tick();
 		handler.tick();
+		Camera.tick();
 	}
 	
 	private void render() {
