@@ -8,8 +8,8 @@ import java.util.Random;
 public class Fish extends GameObject{
 	
 	//The x and y coordinates refer to the top left of the head.
-	private float x, y, velX, velY, angle, speed;
-	private int width, headHeight, tailHeight, turning, timer;
+	private float x, y, velX, velY, angle, speed, timer;
+	private int width, headHeight, tailHeight, turning;
 	private Color headColor, tailColor;
 	private Random rand = new Random();
 
@@ -21,11 +21,11 @@ public class Fish extends GameObject{
 		this.velY = 0;
 		this.angle = (float) 0;
 		this.speed = speed;
+		this.timer = rand.nextInt((int)(10/this.speed))+10/this.speed;
 		this.width = width;
 		this.headHeight = headHeight;
 		this.tailHeight = tailHeight;
 		this.turning = 0;
-		this.timer = rand.nextInt(10)+10;
 		
 		this.headColor = headColor;
 		this.tailColor = tailColor;
@@ -70,17 +70,17 @@ public class Fish extends GameObject{
 		this.angle = (float) (this.angle % (2*Math.PI));
 		this.x += this.velX;
 		this.y += this.velY;
-		velX = (float) Math.cos(angle+(0.5*Math.PI));
-		velY = (float) Math.sin(angle+(0.5*Math.PI));
+		velX = (float)(this.speed * Math.cos(angle+(0.5*Math.PI)));
+		velY = (float)(this.speed * Math.sin(angle+(0.5*Math.PI)));
 	}
 	
 	private void ai() {
 		if(this.timer <= 0) {
 			this.turning = this.rand.nextInt(3)-1;
 			if(this.turning == 0) {
-				this.timer = this.rand.nextInt(10)+10;
+				this.timer = this.rand.nextInt((int)(10/this.speed))+10/this.speed;
 			}else {
-				this.timer = this.rand.nextInt(30)+30;
+				this.timer = this.rand.nextInt((int)(30/this.speed))+30/this.speed;
 			}
 		}else {
 			this.timer -= 1;

@@ -18,7 +18,7 @@ public class Game extends Canvas implements Runnable{
 	
 	public static Handler handler = new Handler();
 	
-	private Fish fish = new Fish(100,100,10,16,32,64,Color.green, Color.red);
+	private Fish fish = new Fish(100,100,1,16,32,32,Color.green, Color.green);
 	
 	private Thread thread;
 	private boolean running = false;
@@ -79,6 +79,7 @@ public class Game extends Canvas implements Runnable{
 	}
 	
 	private void tick() {
+		Camera.tick();
 		handler.tick();
 	}
 	
@@ -93,6 +94,9 @@ public class Game extends Canvas implements Runnable{
 		
 		g2d.setColor(Color.black);
 		g2d.fillRect(0, 0, WIDTH, HEIGHT);
+		
+		g2d.translate(-Camera.getxOffset(), -Camera.getyOffset());
+		
 		
 		handler.render(g2d);
 		

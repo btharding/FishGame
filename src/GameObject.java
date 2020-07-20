@@ -14,7 +14,7 @@ public abstract class GameObject {
 	public GameObject(boolean updateable, boolean renderable) {
 		this.updateable = updateable;
 		this.renderable = renderable;
-		Game.handler.objects.add(this);
+		Handler.objects.add(this);
 	}
 	
 	public abstract void tick();
@@ -25,7 +25,8 @@ public abstract class GameObject {
 		LinkedList<Shape> collisionBounds = this.getCollisionBounds();
 		if(collisionBounds.size()==0) return false;
 		
-		Rectangle window = new Rectangle(0,0,Game.WIDTH,Game.HEIGHT);
+		Rectangle window = new Rectangle((int)(Camera.getxOffset()),(int)(Camera.getyOffset()),Game.WIDTH,Game.HEIGHT);
+//		Rectangle window = new Rectangle(0,0,Game.WIDTH,Game.HEIGHT);
 		
 		for(int i = 0; i < collisionBounds.size(); i++) {
 			Shape currentBound = collisionBounds.get(i);
