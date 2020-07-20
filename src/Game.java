@@ -11,6 +11,10 @@ public class Game extends Canvas implements Runnable{
 	private static final int HEIGHT = 480;
 	private static final String TITLE = "Fish Game";
 	
+	public static Window window;
+	private static KeyHandler keyListener = new KeyHandler();
+	private static MouseHandler mouseListener = new MouseHandler();
+	
 	private Thread thread;
 	private boolean running = false;
 
@@ -19,14 +23,17 @@ public class Game extends Canvas implements Runnable{
 	}
 
 	public Game() {
-		new Window(WIDTH, HEIGHT, TITLE, this);
+		this.addKeyListener(keyListener);
+		this.addMouseListener(mouseListener);
+		this.addMouseMotionListener(mouseListener);
+		window = new Window(WIDTH, HEIGHT, TITLE, this);
 	}
 	
 	public synchronized void start() {
 		thread = new Thread(this);
 		thread.start();
 		running = true;
-		this.requestFocus();
+		
 	}
 	
 	public synchronized void stop() {
