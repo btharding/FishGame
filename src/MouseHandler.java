@@ -1,5 +1,6 @@
 import java.awt.event.MouseEvent;
 
+import javax.swing.SwingUtilities;
 import javax.swing.event.MouseInputListener;
 
 public class MouseHandler implements MouseInputListener {
@@ -16,7 +17,9 @@ public class MouseHandler implements MouseInputListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		Fish.checkClick();
+		if(SwingUtilities.isLeftMouseButton(e)) {
+			Fish.checkClick();
+		}
 	}
 
 	@Override

@@ -31,7 +31,7 @@ public class Game extends Canvas implements Runnable{
 		this.addKeyListener(keyListener);
 		this.addMouseListener(mouseListener);
 		this.addMouseMotionListener(mouseListener);
-		new Fish("Fish" ,rand.nextInt(1000)-500,rand.nextInt(1000)-500,(float) ((rand.nextInt(15)/10)+0.5),rand.nextInt(24)+8,rand.nextInt(24)+16,rand.nextInt(24)+16,new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)), new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
+		new Fish("Fish" ,100,100,(float) ((rand.nextInt(15)/10)+0.5),rand.nextInt(24)+8,rand.nextInt(24)+16,rand.nextInt(24)+16,new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)), new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256)));
 		window = new Window(WIDTH, HEIGHT, TITLE, this);
 	}
 	
@@ -71,7 +71,7 @@ public class Game extends Canvas implements Runnable{
 				frames ++;
 			
 				if(System.currentTimeMillis() - timer >1000) {
-					System.out.println(frames);
+//					System.out.println(frames);
 					timer += 1000;
 					frames = 0;
 				}
@@ -101,7 +101,7 @@ public class Game extends Canvas implements Runnable{
 		g2d.translate(-Camera.getxOffset(), -Camera.getyOffset());
 		
 		handler.render(g2d);
-		
+
 		g2d.translate(Camera.getxOffset(), Camera.getyOffset());
 		
 		if(Fish.selectedFish!=null) {

@@ -14,7 +14,7 @@ public class Handler{
 	public void render(Graphics2D g2d) {
 		for(int i = 0; i< objects.size(); i++) {
 			GameObject object = objects.get(i);
-			if(object.isRenderable()) {
+			if(object.isOnScreen()) {
 				object.render(g2d);
 			}
 		}		

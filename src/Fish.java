@@ -24,7 +24,7 @@ public class Fish extends GameObject{
 	private States state = States.WANDERING;
 
 	public Fish(String name, int x, int y, float speed, int width, int headHeight, int tailHeight, Color headColor, Color tailColor) {
-		super(true, true);
+		super();
 		this.name = name;
 		this.x = x;
 		this.y = y;
@@ -44,12 +44,6 @@ public class Fish extends GameObject{
 
 	@Override
 	public void tick() {
-		if(this.isOnScreen()) {
-			this.renderable = true;
-		}else {
-			this.renderable = false;
-		}
-	
 		this.ai();
 		this.move();
 	}
@@ -87,6 +81,11 @@ public class Fish extends GameObject{
 	}
 	
 	private void move() {
+		if(this.turning == 1) {
+			this.angle -= 0.03;
+		}else if(this.turning == -1) {
+			this.angle += 0.03;
+		}
 		this.angle = (float) (this.angle % (2*Math.PI));
 		this.x += this.velX;
 		this.y += this.velY;
@@ -94,23 +93,22 @@ public class Fish extends GameObject{
 		velY = (float)(this.speed * Math.sin(angle+(0.5*Math.PI)));
 	}
 	
-	private void ai() {
-			if(this.timer <= 0) {
-				this.turning = Fish.rand.nextInt(3)-1;
-				if(this.turning == 0) {
-					this.timer = Fish.rand.nextInt((int)(10/this.speed))+10/this.speed;
-				}else {
-					this.timer = Fish.rand.nextInt((int)(30/this.speed))+30/this.speed;
-				}
-			}else {
-				this.timer -= 1;
-			}
-			
-			if(this.turning == 1) {
-				this.angle -= 0.03;
-			}else if(this.turning == -1) {
-				this.angle += 0.03;
-			}
+	private void ai() {		
+		if(this.timer <= 0) {
+			this.wander();
+		}
+		
+		this.timer --;
+		
+	}
+	
+	private void wander() {
+		this.turning = Fish.rand.nextInt(3)-1;
+		if(this.turning == 0) {
+			this.timer = Fish.rand.nextInt((int)(10/this.speed))+10/this.speed;
+		}else {
+			this.timer = Fish.rand.nextInt((int)(30/this.speed))+30/this.speed;
+		}
 	}
 	
 	public static void checkClick() {		
@@ -119,7 +117,7 @@ public class Fish extends GameObject{
 		for(int i = 0; i < Fish.fishList.size(); i++) {
 			
 			Fish candidate = Fish.fishList.get(i);
-			if(candidate.isRenderable()) {
+			if(candidate.isOnScreen()) {
 				if(candidate.collidesWith(mouse)) {
 					selectFish(candidate);
 					return;
@@ -130,6 +128,7 @@ public class Fish extends GameObject{
 	}
 	
 	public static void selectFish(Fish fish) {
+		System.out.println("Selecting fish");
 		if(fish == null) {
 			if(Fish.selectedFish != null) {
 				Fish.selectedFish.selected = false;
@@ -155,7 +154,9 @@ public class Fish extends GameObject{
 		}else {
 			index = 0;
 		}
-		selectFish(Fish.fishList.get(index));
+		if(Fish.fishList.get(index) != Fish.selectedFish) {
+			selectFish(Fish.fishList.get(index));
+		}
 	}
 
 	public String getName() {

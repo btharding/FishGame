@@ -4,27 +4,35 @@ import java.util.HashMap;
 
 public class KeyHandler extends KeyAdapter{
 	
-	public static HashMap<String, Boolean> arrowKeysPressed = new HashMap<>();
+	public static HashMap<String, Boolean> keysPressed = new HashMap<>();
 	
 	public KeyHandler() {
-		arrowKeysPressed.put("L", false);
-		arrowKeysPressed.put("R", false);
-		arrowKeysPressed.put("U", false);
-		arrowKeysPressed.put("D", false);
+		keysPressed.put("L", false);
+		keysPressed.put("R", false);
+		keysPressed.put("U", false);
+		keysPressed.put("D", false);
+		keysPressed.put("Z", false);
+		keysPressed.put("X", false);
 	}
 	
 	public void keyPressed(KeyEvent e) {
 		int key = e.getKeyCode();
 		if(key == KeyEvent.VK_RIGHT) {
-			arrowKeysPressed.replace("R",true);
+			keysPressed.replace("R",true);
 		}else if(key == KeyEvent.VK_LEFT) {
-			arrowKeysPressed.replace("L",true);
+			keysPressed.replace("L",true);
 		}
 		
 		if(key == KeyEvent.VK_UP) {
-			arrowKeysPressed.replace("U",true);
+			keysPressed.replace("U",true);
 		}else if(key == KeyEvent.VK_DOWN) {
-			arrowKeysPressed.replace("D",true);
+			keysPressed.replace("D",true);
+		}
+		
+		if(key == KeyEvent.VK_Z){
+			keysPressed.replace("Z", true);
+		}else if(key == KeyEvent.VK_X){
+			keysPressed.replace("X", true);
 		}
 
 	}
@@ -36,15 +44,15 @@ public class KeyHandler extends KeyAdapter{
 		}
 		
 		if(key == KeyEvent.VK_RIGHT) {
-			arrowKeysPressed.replace("R",false);
+			keysPressed.replace("R",false);
 		}else if(key == KeyEvent.VK_LEFT) {
-			arrowKeysPressed.replace("L",false);
+			keysPressed.replace("L",false);
 		}
 		
 		if(key == KeyEvent.VK_UP) {
-			arrowKeysPressed.replace("U",false);
+			keysPressed.replace("U",false);
 		}else if(key == KeyEvent.VK_DOWN) {
-			arrowKeysPressed.replace("D",false);
+			keysPressed.replace("D",false);
 		}
 		
 		if(key == KeyEvent.VK_SPACE) {

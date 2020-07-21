@@ -6,14 +6,7 @@ import java.util.LinkedList;
 
 public abstract class GameObject {
 	
-	//Can the object update?
-	protected boolean updateable;
-	//Can the object currently be rendered?
-	protected boolean renderable;
-	
-	public GameObject(boolean updateable, boolean renderable) {
-		this.updateable = updateable;
-		this.renderable = renderable;
+	public GameObject() {
 		Handler.objects.add(this);
 	}
 	
@@ -44,13 +37,5 @@ public abstract class GameObject {
 		AffineTransform transform = new AffineTransform();
 		transform.rotate(angle, rotX, rotY);
 		return transform.createTransformedShape(shape);
-	}
-	
-	public boolean isUpdateable() {
-		return updateable;
-	}
-	
-	public boolean isRenderable() {
-		return renderable;
 	}
 }
