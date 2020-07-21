@@ -17,7 +17,7 @@ public class Fish extends GameObject{
 	
 	//The x and y coordinates refer to the top left of the head.
 	private String name;
-	private float x, y, velX, velY, angle, speed, timer;
+	private float x, y, velX, velY, angle, speed, timer, targetAngle;
 	private int width, headHeight, tailHeight, turning;
 	private Color headColor, tailColor;
 	private boolean selected = false;
@@ -30,7 +30,7 @@ public class Fish extends GameObject{
 		this.y = y;
 		this.velX = 0;
 		this.velY = 0;
-		this.angle = (float) 0;
+		this.angle = 0f;
 		this.speed = speed;
 		this.timer = rand.nextInt((int)(10/this.speed))+10/this.speed;
 		this.width = width;
@@ -46,6 +46,9 @@ public class Fish extends GameObject{
 	public void tick() {
 		this.ai();
 		this.move();
+		
+		System.out.println(this.angle);
+		System.out.println(this.targetAngle);
 	}
 	
 	@Override
@@ -82,9 +85,16 @@ public class Fish extends GameObject{
 	
 	private void move() {
 		if(this.turning == 1) {
-			this.angle -= 0.03;
+			if(this.angle - 0.03 < 0) {
+				this.angle = (float) (2*Math.PI - 0.01);
+			}else{
+				this.angle -= 0.03;
+			}
 		}else if(this.turning == -1) {
 			this.angle += 0.03;
+		}
+		if(this.angle<0) {
+			this.angle = (float) (2*Math.PI-this.angle);
 		}
 		this.angle = (float) (this.angle % (2*Math.PI));
 		this.x += this.velX;
@@ -128,7 +138,6 @@ public class Fish extends GameObject{
 	}
 	
 	public static void selectFish(Fish fish) {
-		System.out.println("Selecting fish");
 		if(fish == null) {
 			if(Fish.selectedFish != null) {
 				Fish.selectedFish.selected = false;
@@ -158,6 +167,23 @@ public class Fish extends GameObject{
 			selectFish(Fish.fishList.get(index));
 		}
 	}
+	
+	public void goTo() {
+		if(this.targetAngle-this.angle>2*Math.PI-this.targetAngle-this.angle) {
+			System.out.println("Rotating anticlockwise");
+			this.turning = 1;
+		}else {			
+			System.out.println("Rotating clockwise");
+			this.turning = -1;
+		}
+	
+		
+		if( Math.abs(this.targetAngle-this.angle) < 0.1) {
+			this.angle = this.targetAngle;
+			this.turning = 0;
+		}
+	}
+	
 
 	public String getName() {
 		return name;
