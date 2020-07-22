@@ -1,5 +1,6 @@
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.Shape;
 import java.util.LinkedList;
@@ -13,6 +14,7 @@ public class Fish extends GameObject{
 	
 	private static enum States{
 		WANDERING,
+		GOTO
 	};
 	
 	//The x and y coordinates refer to the top left of the head.
@@ -22,6 +24,7 @@ public class Fish extends GameObject{
 	private Color headColor, tailColor;
 	private boolean selected = false;
 	private States state = States.WANDERING;
+	private Point targetPoint = null;
 
 	public Fish(String name, int x, int y, float speed, int width, int headHeight, int tailHeight, Color headColor, Color tailColor) {
 		super();
@@ -33,6 +36,7 @@ public class Fish extends GameObject{
 		this.angle = 0f;
 		this.speed = speed;
 		this.timer = rand.nextInt((int)(10/this.speed))+10/this.speed;
+		this.targetAngle = -1;
 		this.width = width;
 		this.headHeight = headHeight;
 		this.tailHeight = tailHeight;
@@ -46,9 +50,6 @@ public class Fish extends GameObject{
 	public void tick() {
 		this.ai();
 		this.move();
-		
-		System.out.println(this.angle);
-		System.out.println(this.targetAngle);
 	}
 	
 	@Override
@@ -103,21 +104,25 @@ public class Fish extends GameObject{
 		velY = (float)(this.speed * Math.sin(angle+(0.5*Math.PI)));
 	}
 	
-	private void ai() {		
-		if(this.timer <= 0) {
-			this.wander();
+	private void ai() {
+		if(this.state == States.WANDERING) {
+			if(this.timer <= 0) {
+				this.wander();
+			}
+			this.turnTo();
+			this.timer --;
 		}
-		
-		this.timer --;
-		
 	}
 	
 	private void wander() {
-		this.turning = Fish.rand.nextInt(3)-1;
-		if(this.turning == 0) {
-			this.timer = Fish.rand.nextInt((int)(10/this.speed))+10/this.speed;
-		}else {
-			this.timer = Fish.rand.nextInt((int)(30/this.speed))+30/this.speed;
+		this.targetAngle = (float) (Fish.rand.nextFloat() * 2 * Math.PI);
+		this.timer = Fish.rand.nextInt((int)(30/this.speed))+10/this.speed;
+	}
+	
+	private void goTo() {
+		if(this.collidesWith(new Rectangle((int)this.targetPoint.getX(),(int)this.targetPoint.getY(),5,5))) {
+			this.state = States.WANDERING;
+			this.targetPoint = null;
 		}
 	}
 	
@@ -168,19 +173,20 @@ public class Fish extends GameObject{
 		}
 	}
 	
-	public void goTo() {
-		if(this.targetAngle-this.angle>2*Math.PI-this.targetAngle-this.angle) {
-			System.out.println("Rotating anticlockwise");
-			this.turning = 1;
-		}else {			
-			System.out.println("Rotating clockwise");
-			this.turning = -1;
-		}
+	public void turnTo() {
+		if(this.targetAngle!=-1) {
+			if(this.targetAngle-this.angle>2*Math.PI-this.targetAngle-this.angle) {
+				this.turning = 1;
+			}else {			
+				this.turning = -1;
+			}
 	
 		
-		if( Math.abs(this.targetAngle-this.angle) < 0.1) {
-			this.angle = this.targetAngle;
-			this.turning = 0;
+			if( Math.abs(this.targetAngle-this.angle) < 0.1) {
+				this.angle = this.targetAngle;
+				this.turning = 0;
+				this.targetAngle = -1;
+			}
 		}
 	}
 	
